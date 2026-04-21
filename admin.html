@@ -2,14 +2,88 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<title>Admin Panel</title>
+<title>Admin Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    padding: 20px;
+}
+
+h1 {
+    color: #38bdf8;
+}
+
+.card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #334155;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #38bdf8;
+    color: black;
+}
+</style>
 </head>
 
 <body>
-<div id="app"></div>
+
+<h1>📊 Panel Admina</h1>
+
+<div class="grid">
+    <div class="card">
+        <h3>Kandydaci</h3>
+        <div id="count">0</div>
+    </div>
+
+    <div class="card">
+        <h3>Średni wynik</h3>
+        <div id="avg">0</div>
+    </div>
+
+    <div class="card">
+        <h3>Top kandydat</h3>
+        <div id="top">-</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>📈 Wykres wyników</h3>
+    <canvas id="chart"></canvas>
+</div>
+
+<div class="card">
+    <h3>🏆 Ranking</h3>
+    <div id="ranking"></div>
+</div>
+
+<button onclick="loadData()">Odśwież</button>
 
 <script type="module">
 
+// 🔥 FIREBASE
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, getDocs, collection } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -23,9 +97,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const appDiv = document.getElementById("app");
+let chart;
 
-async function load() {
+async function loadData() {
+
     const snapshot = await getDocs(collection(db, "wyniki"));
 
     let users = [];
@@ -34,24 +109,60 @@ async function load() {
         let d = doc.data();
 
         users.push({
-            nick: d.gracz,
+            name: d.gracz,
             score: d.wybory.length
         });
     });
 
+    // sortowanie
     users.sort((a,b) => b.score - a.score);
 
-    let html = "<h2>Ranking</h2>";
+    // statystyki
+    document.getElementById("count").innerText = users.length;
 
-    users.forEach((u, i) => {
-        html += `<p>${i+1}. ${u.nick} - ${u.score} pkt</p>`;
+    let avg = users.length 
+        ? (users.reduce((a,b)=>a+b.score,0)/users.length).toFixed(2)
+        : 0;
+
+    document.getElementById("avg").innerText = avg;
+
+    document.getElementById("top").innerText = users[0]?.name || "-";
+
+    // ranking
+    let html = "";
+
+    users.forEach((u,i) => {
+        html += `<p>${i+1}. ${u.name} — ${u.score} pkt</p>`;
     });
 
-    appDiv.innerHTML = html;
+    document.getElementById("ranking").innerHTML = html;
+
+    // wykres
+    let ctx = document.getElementById("chart");
+
+    if (chart) chart.destroy();
+
+    chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: users.map(u => u.name),
+            datasets: [{
+                label: "Wynik",
+                data: users.map(u => u.score),
+                backgroundColor: "#38bdf8"
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
 }
 
-load();
+loadData();
+
+window.loadData = loadData;
 
 </script>
+
 </body>
 </html>
