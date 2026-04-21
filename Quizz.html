@@ -286,14 +286,20 @@
         function pokazPytanie() {
             if (index >= pytania.length) {
 
-                // od razu pokazujemy ekran końcowy
+                // 100% progress (opcjonalnie)
+                let progress = 100;
+
                 appDiv.innerHTML = `
-        <h2 style="text-align:center;">Dziękuję za odpowiedzi!</h2>
+        <div class="progress">
+            <div class="progress-inner" style="width:${progress}%"></div>
+        </div>
+
+        <h2 class="fade" style="text-align:center;">
+            Dziękuję za odpowiedzi!
+        </h2>
     `;
 
-                // zapis w tle (bez blokowania UI)
                 zapiszWybor();
-
                 return;
             }
 
