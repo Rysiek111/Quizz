@@ -304,9 +304,10 @@ window.wybierz = function(i) {
     let p = pytania[index];
 
     wybory.push({
-        pytanie: p.tresc,
-        odpowiedz: p.odp[i]
-    });
+    NumerPytania: index+1,
+    pytanie: p.tresc,
+    odpowiedz: p.odp[i]
+});
 
     index++;
     pokazPytanie();
@@ -314,15 +315,20 @@ window.wybierz = function(i) {
 
 // 💾 zapis do FIREBASE
 async function zapiszWybor() {
-    await addDoc(collection(db, "wyniki"), {
-        gracz: nick,
-        wybory: wybory,
-        data: new Date()
-    });
+    try {
+        await addDoc(collection(db, "wyniki"), {
+            gracz: nick,
+            wybory: wybory,
+            data: new Date()
+        });
 
-appDiv.innerHTML = `
-    <h2 style="text-align: center;">Dziękuję za Twoje odpowiedzi!</h2>
-`;
+        appDiv.innerHTML = `
+            <h2 style="text-align:center;">Dziękuję!</h2>
+        `;
+    } catch (e) {
+        alert("Błąd zapisu!");
+        console.log(e);
+    }
 }
 
 // 📊 pobieranie wyników
