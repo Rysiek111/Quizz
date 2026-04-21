@@ -52,6 +52,10 @@
             transition: all 0.2s ease;
         }
 
+        button:active {
+            transform: scale(0.97);
+        }
+
         button:hover {
             background: #38bdf8;
             color: #020617;
@@ -86,7 +90,8 @@
         }
 
         input {
-            width: 690px;
+            width: 100%;
+            box-sizing: border-box;
             padding: 14px;
             border-radius: 10px;
             border: 1px solid #38bdf8;
@@ -135,6 +140,22 @@
             background: #38bdf8;
         }
 
+        .fade {
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .fade-in {
             animation: fadeInUp 0.5s ease;
         }
@@ -149,6 +170,62 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .end {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .end-card {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .check {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #38bdf8;
+            color: #0f172a;
+            font-size: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            animation: pop 0.4s ease;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0);
+            }
+
+            80% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .end h2 {
+            margin: 10px 0;
+            color: #38bdf8;
+        }
+
+        .end p {
+            color: #cbd5e1;
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -284,35 +361,56 @@
         }
 
         function pokazPytanie() {
+
+            // 🚨 KONIEC QUIZU
             if (index >= pytania.length) {
 
-                // 100% progress (opcjonalnie)
-                let progress = 100;
-
                 appDiv.innerHTML = `
-        <div class="progress">
-            <div class="progress-inner" style="width:${progress}%"></div>
-        </div>
+            <div class="progress">
+                <div class="progress-inner" style="width:100%"></div>
+            </div>
 
-        <h2 class="fade" style="text-align:center;">
-            Dziękuję za odpowiedzi!
-        </h2>
-    `;
+            <h2 class="fade" style="text-align:center;">
+                Dziękuję za odpowiedzi!
+            </h2>
+        `;
 
                 zapiszWybor();
                 return;
             }
 
+            // 📌 aktualne pytanie
             let p = pytania[index];
+
+            // 📊 progress (ILE JUŻ ZROBIONE)
+            let progress = (index / pytania.length) * 100;
+
+            // 🔀 mieszanie odpowiedzi
             let idx = [0, 1, 2, 3];
             shuffle(idx);
 
-            let html = `<h2>${index + 1}/${pytania.length}<br>${p.tresc}</h2>`;
+            // 🎨 HTML pytania
+            let html = `
+        <div class="progress">
+            <div class="progress-inner" style="width:${progress}%"></div>
+        </div>
 
+        <h2 class="fade">
+            ${index + 1}/${pytania.length}<br>
+            ${p.tresc}
+        </h2>
+    `;
+
+            // 🟦 odpowiedzi
             idx.forEach(i => {
-                html += `<button onclick="wybierz(${i})">${p.odp[i]}</button>`;
+                html += `
+            <button class="fade" onclick="wybierz(${i})">
+                ${p.odp[i]}
+            </button>
+        `;
             });
 
+            // 📤 render
             appDiv.innerHTML = html;
         }
 
@@ -333,41 +431,23 @@
         // 💾 zapis do FIREBASE
         async function zapiszWybor() {
             try {
-                function zapiszWybor() {
-                    addDoc(collection(db, "wyniki"), {
-                        gracz: nick,
-                        wybory: wybory,
-                        data: new Date()
-                    }).catch(err => console.log(err));
-                }
+
+                await addDoc(collection(db, "wyniki"), {
+                    gracz: nick,
+                    wybory: wybory,
+                    data: new Date()
+                });
 
                 appDiv.innerHTML = `
-            <h2 style="text-align:center;">Dziękuję!</h2>
+            <h2 style="text-align:center;" class="fade">
+                Dziękuję za odpowiedzi!
+            </h2>
         `;
+
             } catch (e) {
-                alert("Błąd zapisu!");
                 console.log(e);
+                alert("Błąd zapisu!");
             }
-        }
-
-        // 📊 pobieranie wyników
-        window.pokazWyniki = async function () {
-            const querySnapshot = await getDocs(collection(db, "wyniki"));
-
-            let html = "<h2>Wyniki:</h2>";
-
-            querySnapshot.forEach(doc => {
-                let d = doc.data();
-
-                html += `<h3>${d.gracz}</h3>`;
-
-                d.wybory.forEach((w, i) => {
-                    html += `<p>${i + 1}. ${w.odpowiedz}</p>`;
-                });
-            });
-
-            html += `<button onclick="menu()">Powrót</button>`;
-            appDiv.innerHTML = html;
         }
 
         // init
