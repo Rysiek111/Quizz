@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+</head>
+
+<body>
+<div id="app"></div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, getDocs, collection } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA6Dj7pjQO1bnujfufr5Mgvf9Xdqjb-pQ8",
+  authDomain: "quizz-6918d.firebaseapp.com",
+  projectId: "quizz-6918d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const appDiv = document.getElementById("app");
+
+async function load() {
+    const snapshot = await getDocs(collection(db, "wyniki"));
+
+    let users = [];
+
+    snapshot.forEach(doc => {
+        let d = doc.data();
+
+        users.push({
+            nick: d.gracz,
+            score: d.wybory.length
+        });
+    });
+
+    users.sort((a,b) => b.score - a.score);
+
+    let html = "<h2>Ranking</h2>";
+
+    users.forEach((u, i) => {
+        html += `<p>${i+1}. ${u.nick} - ${u.score} pkt</p>`;
+    });
+
+    appDiv.innerHTML = html;
+}
+
+load();
+
+</script>
+</body>
+</html>
