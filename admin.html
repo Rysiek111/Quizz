@@ -133,14 +133,28 @@ function renderUsers() {
     let html = "";
 
     allData.forEach((u, i) => {
+
+        let date = "";
+        if (u.data?.seconds) {
+            date = new Date(u.data.seconds * 1000).toLocaleString();
+        }
+
         html += `
             <div class="card">
-                <b>${u.gracz}</b><br>
 
-                <button onclick="showProfile(${i})">Profil</button>
+                <div style="margin-bottom:6px;">
+                    <b>${u.gracz}</b><br>
+                    <small>${date}</small>
+                </div>
+
+                <button onclick="showProfile(${i})">
+                    Profil
+                </button>
+
                 <button class="delete" onclick="deleteUser(${i})">
                     Usuń
                 </button>
+
             </div>
         `;
     });
