@@ -3,90 +3,245 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <title>Rekrutacja Online</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="icon.png">
 
     <style>
         body {
             margin: 0;
-            font-family: Arial;
-            background: #0f172a;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            font-family: "Inter", Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 720px;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 16px;
+            padding: 30px;
             color: white;
-            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
         }
 
         h1 {
+            text-align: center;
+            margin-bottom: 25px;
             color: #38bdf8;
+            letter-spacing: 1px;
         }
 
-        .section {
-            background: #1e293b;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
+        h3 {
+            margin-bottom: 20px;
+            line-height: 1.4;
         }
 
         button {
-            padding: 8px 12px;
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             background: #334155;
             color: white;
+            font-size: 15px;
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:active {
+            transform: scale(0.97);
         }
 
         button:hover {
             background: #38bdf8;
-            color: black;
+            color: #020617;
+            transform: translateY(-2px);
         }
 
-        .delete {
-            background: #ef4444;
-            margin-top: 10px;
+        .input-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #94a3b8;
+            font-size: 13px;
         }
 
-        .delete:hover {
-            background: #dc2626;
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border: 1px solid #38bdf8;
+            border-radius: 10px;
+            padding: 12px;
+            transition: 0.2s;
         }
 
-        .card {
-            padding: 10px;
-            border-bottom: 1px solid #334155;
+        .input-wrapper:focus-within {
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
+            transform: scale(1.01);
+        }
+
+        .icon {
+            margin-right: 8px;
+            color: #0f172a;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #38bdf8;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            color: #0f172a;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        .error {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #f87171;
+            min-height: 16px;
+        }
+
+        input:focus {
+            outline: none;
+            border: 1px solid #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
+            transform: scale(1.01);
+        }
+
+        .bar {
+            height: 18px;
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            height: 6px;
+            background: #1e293b;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-inner {
+            height: 100%;
+            background: #38bdf8;
+        }
+
+        .fade {
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .end {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .end-card {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .check {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #38bdf8;
+            color: #0f172a;
+            font-size: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            animation: pop 0.4s ease;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0);
+            }
+
+            80% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .end h2 {
+            margin: 10px 0;
+            color: #38bdf8;
+        }
+
+        .end p {
+            color: #cbd5e1;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 
 <body>
-
-    <h1>📊 Panel Admina</h1>
-
-    <div class="section">
-        <h2>🟦 Dashboard</h2>
-        <p>Kandydaci: <span id="count">0</span></p>
-        <p>Testy dziś: <span id="today">0</span></p>
-    </div>
-
-    <div class="section">
-        <h2>🟨 Kandydaci</h2>
-        <input id="search" placeholder="Szukaj kandydata..."
-            style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:none;">
-        <div id="users"></div>
-    </div>
-
-    <div class="section">
-        <h2>🟩 Profil kandydata</h2>
-        <div id="profile">Kliknij kandydata</div>
-    </div>
-
-    <div class="section">
-        <h2>🟪 Statystyki pytań</h2>
-        <div id="stats"></div>
+    <div class="box">
+        <h1>=== Rekrutacja Online ===</h1>
+        <div id="app"></div>
     </div>
 
     <script type="module">
 
+        // 🔥 FIREBASE (TU WKLEJ SWOJE DANE)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getFirestore, getDocs, collection, deleteDoc, doc }
-            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getFirestore, addDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA6Dj7pjQO1bnujfufr5Mgvf9Xdqjb-pQ8",
@@ -97,129 +252,210 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let allData = [];
+        // 📌 PYTANIA
+        let pytania = [
+            {
+                tresc: "Dwóch kluczowych programistów pokłóciło się o architekturę projektu. Jeden grozi odejściem, jeśli jego pomysł nie zostanie przyjęty. Projekt ma opóźnienie 2 tygodnie. Masz 3 minuty na rozmowę z każdym z nich.",
+                odp: ["Przyznaję rację jednemu z programistów i wybieram rozwiązanie technicznie lepsze", "Organizuję wspólne spotkanie mediacyjne i szukam kompromisu", "Narzucam odgórne rozwiązanie jako lider", "Odkładam decyzję na później"]
+            },
+            {
+                tresc: "Masz jedno wolne miejsce w zespole sprzedaży i trzech kandydatów. Zespół jest zgrany, ale ma słabe wyniki sprzedażowe. Kogo wybierasz?",
+                odp: ["Kandydat A – doświadczenie, ale słaba współpraca", "Kandydat B – energia i potencjał", "Kandydat C – polecony przez prezesa", "Nikogo nie zatrudniam,"]
+            },
+            {
+                tresc: "W sieci pojawiła się negatywna opinia o firmie od byłego pracownika. Opinia jest częściowo prawdziwa. Co robisz?",
+                odp: ["Ignoruję wpis", "Publikuję oficjalną, neutralną odpowiedź", "Odpowiadam szczerze i transparentnie", "Usuwam komentarz jeśli to możliwe"]
+            },
+            {
+                tresc: "Firma musi zredukować koszty o 15%. Musisz zwolnić jedną osobę z działu marketingu. Kogo wybierasz?",
+                odp: ["Najstarsza stażem, ale mało efektywna", "Najlepsze wyniki, ale toksyczna dla zespołu", "Solidna, ale mało elastyczna", "Losowy wybór"]
+            },
+            {
+                tresc: "Nowy pracownik po tygodniu czuje się zagubiony i nie ma wsparcia. Co robisz?",
+                odp: ["Organizuję pełne wdrożenie i plan działania", "Przydzielam mentora", "Zgłaszam problem przełożonemu", "Ignoruję sytuację"]
+            }
+        ];
 
-        async function load() {
+        let wybory = [];
+        let index = 0;
+        let nick = "";
 
-            const snap = await getDocs(collection(db, "wyniki"));
-            document.getElementById("search").addEventListener("input", renderUsers);
-
-            allData = [];
-
-            snap.forEach(docSnap => {
-                let d = docSnap.data();
-
-                allData.push({
-                    id: docSnap.id,
-                    ...d
-                });
-            });
-
-            renderDashboard();
-            renderUsers();
-            renderStats();
+        // 🎲 shuffle
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
         }
 
-        function renderDashboard() {
-
-            document.getElementById("count").innerText = allData.length;
-
-            let today = new Date().toDateString();
-
-            let todayCount = allData.filter(d => {
-                if (!d.data) return false;
-                return new Date(d.data.seconds * 1000).toDateString() === today;
-            }).length;
-
-            document.getElementById("today").innerText = todayCount;
+        // 🧭 menu
+        function menu() {
+            appDiv.innerHTML = `
+        <button onclick="start()">Start</button>
+    `;
         }
 
-        function renderUsers() {
+        document.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                const input = document.getElementById("nickInput");
+                if (input) startQuiz();
+            }
+        });
 
-            let query = document.getElementById("search")?.value?.toLowerCase() || "";
+        window.validateNick = function () {
+            const input = document.getElementById("nickInput");
+            const error = document.getElementById("nickError");
+            const btn = document.getElementById("startBtn");
 
-            let html = "";
+            if (!input) return;
 
-            allData
-                .filter(u => u.gracz.toLowerCase().includes(query))
-                .forEach((u, i) => {
+            let value = input.value.trim();
 
-                    let date = "";
-                    if (u.data?.seconds) {
-                        date = new Date(u.data.seconds * 1000).toLocaleString();
-                    }
-
-                    html += `
-                        <div class="card">
-                            <b>${u.gracz}</b><br>
-                            <small>${date}</small><br><br>
-                            <button onclick="showProfile(${i})">Profil</button>
-                            <button class="delete" onclick="deleteUser(${i})">Usuń</button>
-                        </div>
-                    `;
-                });
-
-            document.getElementById("users").innerHTML = html;
+            if (value.length < 3) {
+                error.textContent = "Nick musi mieć min. 3 znaki";
+                btn.disabled = true;
+            }
+            else if (value.length > 15) {
+                error.textContent = "Nick za długi (max 15 znaków)";
+                btn.disabled = true;
+            }
+            else {
+                error.textContent = "OK ✓";
+                error.style.color = "#34d399";
+                btn.disabled = false;
+            }
         }
 
-        window.showProfile = function (i) {
+        // ▶️ start
+        window.start = function () {
+            appDiv.innerHTML = `
+        <div class="fade-in">
+            <label class="input-label">Nick</label>
 
-            let u = allData[i];
+            <div class="input-wrapper">
+                <span class="icon">👤</span>
+                <input id="nickInput" placeholder="Nick" oninput="validateNick()">
+            </div>
 
-            let html = `<h3>${u.gracz}</h3>`;
+            <div id="nickError" class="error"></div>
+        </div>
 
-            u.wybory.forEach((w, j) => {
-                html += `<p>${j + 1}. ${w.pytanie}<br><b>${w.odpowiedz}</b></p>`;
-            });
-
-            document.getElementById("profile").innerHTML = html;
+        <div class="fade-in" style="animation-delay:0.15s">
+            <button id="startBtn" onclick="startQuiz()" disabled>Rozpocznij</button>
+        </div>
+    `;
         }
 
-        window.deleteUser = async function (i) {
+        // 🎮 quiz
+        window.startQuiz = function () {
+            nick = document.getElementById("nickInput").value.trim();
 
-            let u = allData[i];
-
-            if (!confirm("Usunąć tego kandydata?")) return;
-
-            await deleteDoc(doc(db, "wyniki", u.id));
-
-            load();
-        }
-
-        function renderStats() {
-
-            let stats = {};
-
-            allData.forEach(user => {
-                user.wybory.forEach(w => {
-
-                    if (!stats[w.pytanie]) stats[w.pytanie] = {};
-                    if (!stats[w.pytanie][w.odpowiedz]) stats[w.pytanie][w.odpowiedz] = 0;
-
-                    stats[w.pytanie][w.odpowiedz]++;
-                });
-            });
-
-            let html = "";
-
-            for (let q in stats) {
-
-                html += `<h4>${q}</h4>`;
-
-                for (let a in stats[q]) {
-                    html += `<p>${a} → ${stats[q][a]}x</p>`;
-                }
-
-                html += "<hr>";
+            if (nick.length < 3) {
+                alert("Nick jest za krótki!");
+                return;
             }
 
-            document.getElementById("stats").innerHTML = html;
+            shuffle(pytania);
+            index = 0;
+            wybory = [];
+            pokazPytanie();
         }
 
-        load();
+        function pokazPytanie() {
+
+            // 🚨 KONIEC QUIZU
+            if (index >= pytania.length) {
+
+                appDiv.innerHTML = `
+            <div class="progress">
+                <div class="progress-inner" style="width:100%"></div>
+            </div>
+
+            <h2 class="fade" style="text-align:center;">
+                Dziękuję za odpowiedzi!
+            </h2>
+        `;
+
+                zapiszWybor();
+                return;
+            }
+
+            // 📌 aktualne pytanie
+            let p = pytania[index];
+
+            // 📊 progress (ILE JUŻ ZROBIONE)
+            let progress = (index / pytania.length) * 100;
+
+            // 🔀 mieszanie odpowiedzi
+            let idx = [0, 1, 2, 3];
+            shuffle(idx);
+
+            // 🎨 HTML pytania
+            let html = `
+        <div class="progress">
+            <div class="progress-inner" style="width:${progress}%"></div>
+        </div>
+
+        <h2 class="fade">
+            ${index + 1}/${pytania.length}<br>
+            ${p.tresc}
+        </h2>
+    `;
+
+            // 🟦 odpowiedzi
+            idx.forEach(i => {
+                html += `
+            <button class="fade" onclick="wybierz(${i})">
+                ${p.odp[i]}
+            </button>
+        `;
+            });
+
+            // 📤 render
+            appDiv.innerHTML = html;
+        }
+
+        // 📌 wybór
+        window.wybierz = function (i) {
+            let p = pytania[index];
+
+            wybory.push({
+                NumerPytania: index + 1,
+                pytanie: p.tresc,
+                odpowiedz: p.odp[i]
+            });
+
+            index++;
+            pokazPytanie();
+        }
+
+        // 💾 zapis do FIREBASE
+        async function zapiszWybor() {
+            try {
+
+                await addDoc(collection(db, "wyniki"), {
+                    gracz: nick,
+                    wybory: wybory,
+                    data: new Date()
+                });
+
+                appDiv.innerHTML = `
+            <h2 style="text-align:center;" class="fade">
+                Możesz zamknąć stronę.
+            </h2>
+        `;
+
+            } catch (e) {
+                console.log(e);
+                alert("Błąd zapisu!");
+            }
+        }
+
+        // init
+        const appDiv = document.getElementById("app");
+        menu();
 
     </script>
-
 </body>
 
 </html>
